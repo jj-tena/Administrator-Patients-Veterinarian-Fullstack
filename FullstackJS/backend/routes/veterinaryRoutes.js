@@ -1,13 +1,16 @@
 import express from "express";
+import { 
+    register, 
+    profile,
+    confirm
+} from "../controllers/veterinaryController.js";
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('Hola veterinarios')
-})
+router.post('/', register);
 
-router.get('/login', (req, res) => {
-    res.send('Login')
-})
+router.get('/profile', profile);
+
+router.get('/confirm/:token', confirm);
 
 export default router;
