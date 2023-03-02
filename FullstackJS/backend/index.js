@@ -2,6 +2,7 @@ import express from "express";
 import connectDB from "./config/db.js";
 import dotenv from 'dotenv';
 import veterinaryRoutes from './routes/veterinaryRoutes.js';
+import patientRoutes from './routes/patientRoutes.js'; 
 
 const app = express();
 
@@ -11,7 +12,9 @@ dotenv.config();
 
 connectDB();
 
-app.use('/api/veterinaries', veterinaryRoutes)
+app.use('/api/veterinaries', veterinaryRoutes);
+
+app.use('/api/patients', patientRoutes)
 
 const PORT = process.env.PORT || 4000
 

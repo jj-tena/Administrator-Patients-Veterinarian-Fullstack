@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt';
 import generateId from "../helpers/generateId.js";
+
 
 const veterinarySchema = mongoose.Schema({
     name: {
@@ -7,11 +9,11 @@ const veterinarySchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    email: {
+    password: {
         type: String,
         required: true,
     },
-    password: {
+    email: {
         type: String,
         required: true,
         unique: true,
@@ -34,7 +36,19 @@ const veterinarySchema = mongoose.Schema({
         type: Boolean,
         default: false,
     }
-})
+});
+
+veterinarySchema.pre('save', async function(next){
+    if (!this.isModified("password")){
+        next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+});
+
+veterinarySchema.methods.checkPassword = async function(passwordForm) {
+    return await bcrypt.compare(passwordForm, this.password);
+}
 
 const Veterinary = mongoose.model("Veterinary", veterinarySchema);
 
