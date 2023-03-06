@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import {Link} from 'react-router-dom'
 import Alert from '../components/Alert';
+import clientAxios from '../config/axios';
 
 export const Register = () => {
   const [name, setName] = useState('');
@@ -9,7 +10,7 @@ export const Register = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [alert, setAlert] = useState({});
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if([name, email, password, repeatPassword].includes('')){
       setAlert({msg: 'Hay campos vacíos', error: true});
@@ -24,6 +25,19 @@ export const Register = () => {
       return;
     }
     setAlert({})
+    try {
+      const url =`/veterinaries`;
+      await clientAxios.post(url, {name, email, password});
+      setAlert({
+        msg: 'Cuenta creada correctamente, revisa tu email para verificarla',
+        error: false
+      })
+    } catch (error) {
+      setAlert({
+        msg: error.response.data.msg,
+        error: true
+      })
+    }
   }
 
   const {msg} = alert;

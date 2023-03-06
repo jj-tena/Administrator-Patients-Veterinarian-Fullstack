@@ -1,16 +1,51 @@
+import { useState } from 'react';
 import {Link} from 'react-router-dom'
+import Alert from '../components/Alert';
+import clientAxios from '../config/axios';
 
 export const ForgotPassword = () => {
+
+  const [email, setEmail] = useState('');
+  const [alert, setAlert] = useState({});
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    if(email === '') {
+      setAlert({
+        msg: 'El email es obligatorio',
+        error: true
+      });
+      return;
+    }
+    try {
+      const {data} = await clientAxios.post('/veterinaries/forgot-password', {email});
+      console.log(data);
+      setAlert({msg: data.msg, error: false})
+    } catch (error) {
+      setAlert({
+        msg: error.response.data.msg,
+        error: true
+      });
+    }
+  }
+
+  const {msg} = alert;
+
   return (
     <>
       <div>
         <h1 className="text-indigo-600 font-black text-6xl">
-          Inicia sesión y Administra tus {""} 
+          Reestablece tu Password y Administra tus {""} 
           <span className="text-black">Pacientes</span>
         </h1>
       </div>
       <div className="mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white">
-        <form>
+          {msg && <Alert 
+            alert={alert}          
+          />}
+        <form
+          onSubmit={handleSubmit}
+        >
           <div className="my-5">
             <label className="uppercase text-gray-600 block text-xl font-bold">
               Email
@@ -19,6 +54,8 @@ export const ForgotPassword = () => {
               type="email"
               placeholder="Email de registro"
               className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
             />
           </div>
           <input 
