@@ -5,12 +5,16 @@ const AuthContext = createContext();
 
 const AuthProvider = ({children}) => {
 
+    const [starting, setStarting] = useState(true);
     const [auth, setAuth] = useState({});
 
     useEffect(() => {
         const authUser = async () => {
             const token = localStorage.getItem('token');
-            if (!token) return;
+            if (!token) {
+                setStarting(false);
+                return;
+            }
             const config = {
                 headers: {
                     "Content-Type": "application/json",
@@ -24,17 +28,25 @@ const AuthProvider = ({children}) => {
                 console.log(error.response.data.msg);
                 setAuth({})
             }
+            setStarting(false);
 
         }
         authUser();
     }, [])
+
+    const logOut = () => {
+        localStorage.removeItem('token');
+        setAuth({})
+    };
 
     return (
         <AuthContext.Provider
             value={
                 {
                     auth,
-                    setAuth
+                    setAuth,
+                    starting,
+                    logOut
                 }
             }
         >

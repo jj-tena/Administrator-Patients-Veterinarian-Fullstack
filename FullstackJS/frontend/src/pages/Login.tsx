@@ -10,6 +10,8 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [alert, setAlert] = useState({});
 
+  const {setAuth} = useAuth();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -28,6 +30,7 @@ export const Login = () => {
         error: false
       });
       localStorage.setItem('token', data.token);
+      setAuth(data);
       navigate('/admin');
     } catch (error) {
       setAlert({

@@ -5,23 +5,32 @@ import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPasword'
 import ConfirmAccount from './pages/ConfirmAccount'
 import NewPassword from './pages/NewPassword'
-
 import { AuthProvider } from './context/AuthProvider'
+import { PatientsProvider } from './context/PatientsProvider'
+import ProtectedRoute from './layout/ProtectedRoute'
+import AdminPatients from './pages/AdminPatients';
+
 
 function App() {
 
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<AuthLayout />}>
-            <Route index element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="forgot-password" element={<ForgotPassword />} />
-            <Route path="forgot-password/:token" element={<NewPassword />} />
-            <Route path="confirm/:token" element={<ConfirmAccount />} />
-          </Route>
-        </Routes>
+        <PatientsProvider>
+          <Routes>
+            <Route path="/" element={<AuthLayout />}>
+              <Route index element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="forgot-password/:token" element={<NewPassword />} />
+              <Route path="confirm/:token" element={<ConfirmAccount />} />
+            </Route>
+
+            <Route path="/admin" element={<ProtectedRoute />}>
+              <Route index element={<AdminPatients />} />
+            </Route>
+          </Routes>
+        </PatientsProvider>
       </AuthProvider>
     </BrowserRouter>
   )
