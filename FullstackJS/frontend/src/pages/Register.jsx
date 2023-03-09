@@ -10,7 +10,7 @@ export const Register = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [alert, setAlert] = useState({});
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if([name, email, password, repeatPassword].includes('')){
       setAlert({msg: 'Hay campos vacíos', error: true});

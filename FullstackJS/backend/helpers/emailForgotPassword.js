@@ -12,7 +12,7 @@ const emailForgotPassword = async (data) => {
     const {email, name, token} = data;
     console.log(data)
     const info = await transporter.sendMail({
-        from: "APV - Administrador de Pacientes de Veterinaria",
+        from: '"APV - Administrador Pacientes Veterinaria" <apv@correo.com>',
         to: email,
         subject: 'Reestablece tu password',
         text: 'Reestablece tu password',
