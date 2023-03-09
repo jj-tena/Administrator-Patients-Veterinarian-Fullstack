@@ -22,7 +22,6 @@ const getPatient = async (req, res) => {
     if (!patient) {
         return res.status(404).json({msg: 'User not found'});
     }
-    console.log(req.veterinary);
     if (patient.veterinary.toString() !== req.veterinary._id.toString()) {
         return res.status(400).json({msg: 'Action not allowed'});
     }

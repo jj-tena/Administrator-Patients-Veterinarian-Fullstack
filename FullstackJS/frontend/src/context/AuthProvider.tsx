@@ -39,6 +39,60 @@ const AuthProvider = ({children}) => {
         setAuth({})
     };
 
+    const updateProfile = async (profile) => {
+        const token = localStorage.getItem('token');
+            if (!token) {
+                setStarting(false);
+                return;
+            }
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            try {
+                const url = `/veterinaries/profile/${profile._id}`;
+                const {data} = await clientAxios.put(url, profile, config)
+                return {
+                    msg: 'Actualizado correctamente',
+                    error: false
+                }
+            } catch (error) {
+                return {
+                    msg: error.response.data.msg,
+                    error: true
+                }
+            }
+    }
+
+    const savePassword = async (password) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setStarting(false);
+            return;
+        }
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }
+        try {
+            const url = 'veterinaries/update-password';
+            const {data} = await clientAxios.put(url, password, config)
+            return {
+                msg: data.msg,
+                error: false
+            }
+        } catch (error) {
+            return {
+                msg: error.response.data.msg,
+                error: true
+            }
+        }
+    }
+
     return (
         <AuthContext.Provider
             value={
@@ -46,7 +100,9 @@ const AuthProvider = ({children}) => {
                     auth,
                     setAuth,
                     starting,
-                    logOut
+                    logOut,
+                    updateProfile,
+                    savePassword
                 }
             }
         >

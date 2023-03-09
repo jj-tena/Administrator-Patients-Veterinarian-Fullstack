@@ -9,7 +9,8 @@ import { AuthProvider } from './context/AuthProvider'
 import { PatientsProvider } from './context/PatientsProvider'
 import ProtectedRoute from './layout/ProtectedRoute'
 import AdminPatients from './pages/AdminPatients';
-
+import { EditProfile } from './pages/EditProfile';
+import { ChangePassword } from './pages/ChangePassword';
 
 function App() {
 
@@ -28,6 +29,8 @@ function App() {
 
             <Route path="/admin" element={<ProtectedRoute />}>
               <Route index element={<AdminPatients />} />
+              <Route path="profile" element={<EditProfile />} />
+              <Route path="change-password" element={<ChangePassword />} />
             </Route>
           </Routes>
         </PatientsProvider>

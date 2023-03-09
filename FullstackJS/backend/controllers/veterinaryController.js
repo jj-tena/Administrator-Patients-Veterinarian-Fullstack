@@ -123,6 +123,48 @@ const newPassword = async (req, res) => {
 
 }
 
+const updateProfile = async (req, res) => {
+    const veterinary = await Veterinary.findById(req.params.id);
+    if (!veterinary) {
+        const error = new Error('Hubo un error');
+        return res.status(400).json({msg: error.message});
+    }
+    if (veterinary.email !== req.body.email) {
+        const existsEmail = await Veterinary.findOne({email: req.body.email});
+        if (existsEmail) {
+            const error = new Error('Ese email ya está registrado');
+            return res.status(400).json({msg: error.message});
+        }
+    }
+    try {
+        veterinary.name = req.body.name;
+        veterinary.email = req.body.email;
+        veterinary.web = req.body.web;
+        veterinary.phoneNumber = req.body.phoneNumber;
+        const veterinaryUpdated = await veterinary.save();
+        res.json(veterinaryUpdated);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const updatePassword = async (req, res) => {
+    const {id} = req.veterinary;
+    const {current_password, new_password} = req.body;
+    const veterinary = await Veterinary.findById(id);
+    if (!veterinary) {
+        const error = new Error('Hubo un error');
+        return res.status(400).json({msg: error.message});
+    }
+    if (await veterinary.checkPassword(current_password)){
+        veterinary.password = new_password;
+        await veterinary.save();
+        res.json({msg: 'Password actualizado correctamente'});
+    } else {
+        const error = new Error('El password actual es incorrecto');
+        return res.status(400).json({msg: error.message});
+    }
+}
 
 export {
     register,
@@ -131,5 +173,7 @@ export {
     authenticate,
     forgotPassword,
     checkToken,
-    newPassword
+    newPassword,
+    updateProfile,
+    updatePassword
 }
