@@ -1,5 +1,5 @@
-# Administrator-Patients-Veterinarian-Fullstack
-APV is a fullstack web application through which veterinarians can administer to their patients.
+# Veterinary-Admin
+VeterinaryAdmin is a fullstack web application through which veterinarians can administer to their patients.
 
 The backend of the project has been developed using JavaScript under the NodeJS framework and Express. To authenticate users it uses JWT and to send confirmation emails it uses Mailtrap and Sendinblue. As for the persistence of the data, it uses a MongoDB database with which it communicates via Mongoose as an ORM. Finally, it is deployed in Railway.
 
